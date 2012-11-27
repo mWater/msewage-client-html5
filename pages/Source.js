@@ -37,75 +37,33 @@ pages.Source = function(uid, setLocation, hideLocation) {
 				page.pager.loadPage("SourceEdit", [source.uid]);
 			});
 
-			page.$("#add_test_button").on("tap", function() {
-				page.pager.loadPage("NewTest", [source.uid]);
+			page.$("#add_report_button").on("tap", function() {
+				page.pager.loadPage("SourceReport", [source.uid]);
 			});
 
-			page.$("#add_note_button").on("tap", function() {
-				page.pager.loadPage("SourceNote", [source.uid]);
-			});
-
-			Pager.makeTappable(page.$("#tests"), function(row) {
-				// Get test
-				page.model.queryTestByUid(row.id, function(test) {
-					page.pager.loadPage("Test_" + test.test_type, [test.uid]);
-				}, page.error);
-			});
-
-			Pager.makeTappable(page.$("#notes"), function(row) {
-				page.pager.loadPage("SourceNote", [source.uid, row.id]);
+			Pager.makeTappable(page.$("#reports"), function(row) {
+				page.pager.loadPage("SourceReport", [source.uid, row.id]);
 			});
 
 			if (!page.auth.canEdit(source)) {
 				page.$("#edit_source_button, #location_set").attr("disabled", true);
 			}
 
-			if (!page.auth.canAdd("source_notes")) {
-				page.$("#add_note_button").attr("disabled", true);
-			}
-
-			if (!page.auth.canAdd("samples")) {
-				page.$("#add_test_button").attr("disabled", true);
+			if (!page.auth.canAdd("source_reports")) {
+				page.$("#add_report_button").attr("disabled", true);
 			}
 
 			if (!hideLocation)
 				displayLocation();
 
-			// Fill water analyses
-			page.model.querySamplesAndTests(source.uid, function(samples) {
+			// Fill reports
+			page.model.querySourceReports(source.uid, function(reports) {
 				var view = {
-					analyses : []
+					reports : _.map(reports, function(n) {
+					    return _.extend(n, { notes: JSON.parse(n.results).notes });
+					})
 				}
-
-				_.each(samples, function(sample) {
-					_.each(sampleanalysis.getAnalyses(sample), function(anl) {
-						anl.sample = sample;
-						view.analyses.push(anl);
-					});
-				});
-				page.template("source_analyses", view, $("#analyses"));
-
-				var view = {
-					tests : []
-				}
-
-				_.each(samples, function(sample) {
-					_.each(sample.tests, function(test) {
-						test.summary = sampleanalysis.summarizeTest(test);
-						view.tests.push(test);
-					});
-				});
-				page.template("source_tests", view, $("#tests"));
-
-
-			}, page.error);
-
-			// Fill notes
-			page.model.querySourceNotes(source.uid, function(notes) {
-				var view = {
-					notes : notes
-				}
-				page.template("source_notes", view, $("#notes"));
+				page.template("source_reports", view, $("#reports"));
 			}, page.error);
 		}
 

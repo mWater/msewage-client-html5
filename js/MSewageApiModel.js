@@ -57,8 +57,6 @@ function MSewageApiModel(syncServer) {
 		var lat = (latitude - 1) + "," + (latitude + 1);
 		var lng = (longitude - 1) + "," + (longitude + 1);
 
-		// TODO include own sources with no location?
-
 		$.get(makeUrl("sources"), {
 			latitude : lat,
 			longitude : lng
@@ -102,19 +100,19 @@ function MSewageApiModel(syncServer) {
 		}).error(error);
 	};
 
-	this.querySourceNotes = function(sourceUid, success, error) {
-		$.get(makeUrl("sources/" + sourceUid + "/source_notes"), function(data) {
-			success(rowifyArray(data.source_notes, "source_notes"));
+	this.querySourceReports = function(sourceUid, success, error) {
+		$.get(makeUrl("sources/" + sourceUid + "/reports"), function(data) {
+			success(rowifyArray(data.reports, "reports"));
 		}).error(error);
 	};
 
-	this.querySourceNoteByUid = function(uid, success, error) {
-		$.get(makeUrl("source_notes/" + uid), function(data) {
-			success(_.extend(data, new Row("source_notes")));
+	this.queryReportByUid = function(uid, success, error) {
+		$.get(makeUrl("reports/" + uid), function(data) {
+			success(_.extend(data, new Row("reports")));
 		}).error(error);
 	};
 
 	// List of source type ids
 	// TODO replace with query
-	this.sourceTypes = _.range(16);
+	this.sourceTypes = _.range(10);
 }

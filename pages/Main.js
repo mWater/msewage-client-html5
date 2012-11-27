@@ -13,9 +13,6 @@ pages.Main = function() {
             page.$("#map").on("tap", function() {
                 page.pager.loadPage("Map");
             });
-            page.$("#tests").on("tap", function() {
-                page.pager.loadPage("Tests");
-            });
             page.$("#settings").on("tap", function() {
                 page.pager.loadPage("Settings");
             });
@@ -44,7 +41,7 @@ pages.Main = function() {
         title : "Logout"
     }];
 
-    this.actionbarTitle = "mWater";
+    this.actionbarTitle = "mSewage";
 
     var syncInProgress = false;
     var syncCancel = false;

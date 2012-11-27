@@ -37,8 +37,8 @@
         <script src="js/geoslicing.js"></script>
         <script src="js/GeoLoadTracker.js"></script>
         <script src="js/MapMarkerManager.js"></script>
-        <script src="js/MWaterApiModel.js"></script>
-        <script src="js/MWaterSqlModel.js"></script>
+        <script src="js/MSewageApiModel.js"></script>
+        <script src="js/MSewageSqlModel.js"></script>
         <script src="js/sampleanalysis.js"></script>
         <script src="js/Application.js"></script>
         <script src="js/SyncDb.js"></script>
@@ -62,13 +62,7 @@
         <script src="pages/Tests.js"></script>
         <script src="pages/NewTest.js"></script>
         <script src="pages/Photo.js"></script>
-        <script src="pages/Test.js"></script>
-        <script src="pages/Test_0.js"></script>
-        <script src="pages/Test_1.js"></script>
-        <script src="pages/Test_2.js"></script>
-        <script src="pages/Test_4.js"></script>
-        <script src="pages/Test_5.js"></script>
-        <script src="pages/SourceNote.js"></script>
+        <script src="pages/SourceReport.js"></script>
         <script src="pages/ExampleSurvey.js"></script>
 
         <script>
@@ -83,7 +77,7 @@
 						actionbar : window.actionbar
 					};
 					if (!isCordova) {
-						opts.serverUrl = "/mwater/apiv2/";
+						opts.serverUrl = "/msewage/apiv2/";
 						opts.cacheImages = false;
 
 						// Offline db only on iphone
@@ -100,7 +94,7 @@
 				// Handle special cases for not in Cordova
 				if (!window.device || window.device.platform != "Android") {
 					actionbar = new HtmlActionbar($("body"), {
-						defaultTitle : "mWater"
+						defaultTitle : "mSewage"
 					});
 				}
 			}
