@@ -3,13 +3,15 @@ var pages = pages || {}
 pages.SourceReport = function(sourceUid, uid) {
     var page = this;
 
+    var saveNeeded = false;
+
     function createSurvey(options) {
         var survey = (function() {
-            var model = new surveys.SurveyModel({
+            var model = new (surveys.SurveyModel.extend({
                 defaults : {
                     details : false
                 }
-            });
+            }))();
             var sections = [], questions = [];
 
             questions.push(new surveys.TextQuestion({
@@ -141,9 +143,7 @@ pages.SourceReport = function(sourceUid, uid) {
         return survey;
     }
 
-    var needsSave = false;
-
-    function saveResults() {
+    function saveResults(callback) {
         // Read values
         report.results = JSON.stringify(page.survey.model.toJSON());
 
@@ -155,13 +155,15 @@ pages.SourceReport = function(sourceUid, uid) {
                 report.source = sourceUid;
                 report.created_by = page.syncServer.getUsername();
                 page.model.insertRow(tx, "reports", report);
-            } else if (needsSave) {
+            } else if (saveNeeded) {
                 page.model.updateRow(tx, report, {
                     results : report.results
                 });
             }
         }, page.error, function() {
-            page.pager.closePage();
+            saveNeeded = false;
+            if (callback)
+                callback();
         });
     }
 
@@ -179,7 +181,9 @@ pages.SourceReport = function(sourceUid, uid) {
         page.survey = createSurvey();
         page.survey.view.options.onFinish = function() {
             // Save results
-            saveResults();
+            saveResults(function() {
+                page.pager.closePage();
+            });
         };
 
         // Load data
@@ -226,7 +230,7 @@ pages.SourceReport = function(sourceUid, uid) {
 
     this.deactivate = function() {
         // Offer to save changes
-        if (needsSave && confirm("Save changes?"))
+        if (saveNeeded && confirm("Save changes?"))
             saveResults();
     };
 
