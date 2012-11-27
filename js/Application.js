@@ -20,20 +20,20 @@ function Application(opts) {
 
     // Open database
     var syncClient;
-    if (opts.localDb) {
-        var db = window.openDatabase("msewage", "1.0", "mSewage", 1000000);
-
-        // Create sync database
-        this.syncDb = new SyncDb(db, MWaterSqlModel.tableDefs);
-
-        // Create model
-        this.model = new MSewageSqlModel(db, this.syncDb);
-
-        // Create sync client
-        syncClient = new SyncClient(this.syncDb, syncServer);
-    } else {
+    // if (opts.localDb) {
+        // var db = window.openDatabase("msewage", "1.0", "mSewage", 1000000);
+// 
+        // // Create sync database
+        // this.syncDb = new SyncDb(db, MWaterSqlModel.tableDefs);
+// 
+        // // Create model
+        // this.model = new MSewageSqlModel(db, this.syncDb);
+// 
+        // // Create sync client
+        // syncClient = new SyncClient(this.syncDb, syncServer);
+    // } else {
         this.model = new MSewageApiModel(syncServer);
-    }
+//    }
 
     // Create problem reporter
     ProblemReporter.register(opts.serverUrl, version, function() {
@@ -79,7 +79,7 @@ function Application(opts) {
     }
 
     if (opts.cacheImages) {
-        var imageManager = new CachedImageManager(syncServer, "Android/data/co.mwater.clientapp/images");
+        var imageManager = new CachedImageManager(syncServer, "Android/data/co.mwater.clientapp.msewage/images");
     } else {
         var imageManager = new SimpleImageManager(syncServer);
     }
