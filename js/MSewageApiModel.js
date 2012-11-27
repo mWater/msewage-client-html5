@@ -1,4 +1,4 @@
-function MWaterApiModel(syncServer) {
+function MSewageApiModel(syncServer) {
 	var that = this;
 
 	this.init = function(success, error) {
@@ -11,7 +11,7 @@ function MWaterApiModel(syncServer) {
 		};
 		callback(tx);
 		$.when.apply(window, tx.jqXhrs).done(success).fail(error);
-	}
+	};
 
 	function makeUrl(addr) {
 		return syncServer.baseUrl + addr + "?clientuid=" + syncServer.getClientUid();
@@ -23,7 +23,7 @@ function MWaterApiModel(syncServer) {
 			type : "PUT",
 			data : values,
 		}));
-	}
+	};
 
 
 	this.updateRow = function(tx, row, values) {
@@ -31,21 +31,22 @@ function MWaterApiModel(syncServer) {
 			type : "POST",
 			data : values,
 		}));
-	}
+	};
 
 
 	this.deleteRow = function(tx, row) {
 		tx.jqXhrs.push($.ajax(makeUrl(row.table + "/" + row.uid), {
 			type : "DELETE",
 		}));
-	}
+	};
 
 	function Row(table) {
 		this.table = table;
 	}
 
 	function rowifyArray(array, table) {
-		for (var i = 0; i < array.length; i++)
+	    var i;
+		for (i = 0; i < array.length; i++)
 			_.extend(array[i], new Row(table));
 		return array;
 	}
@@ -75,7 +76,7 @@ function MWaterApiModel(syncServer) {
 			rowifyArray(src, "sources");
 			success(src);
 		}).error(error);
-	}
+	};
 
 
 	this.queryUnlocatedSources = function(createdBy, search, success, error) {
@@ -92,21 +93,12 @@ function MWaterApiModel(syncServer) {
 			success(src);
 		}).error(error);
 
-	}
+	};
 
 
 	this.querySourceByUid = function(uid, success, error) {
 		$.get(makeUrl("sources/" + uid), function(data) {
 			success(_.extend(data, new Row("sources")));
-		}).error(error);
-	}
-
-
-	this.querySamplesAndTests = function(sourceUid, success, error) {
-		$.get(makeUrl("sources/" + sourceUid), {
-			samples : "all"
-		}, function(data) {
-			success(rowifyArray(data.samples, "samples"));
 		}).error(error);
 	};
 
@@ -114,30 +106,13 @@ function MWaterApiModel(syncServer) {
 		$.get(makeUrl("sources/" + sourceUid + "/source_notes"), function(data) {
 			success(rowifyArray(data.source_notes, "source_notes"));
 		}).error(error);
-	}
-
+	};
 
 	this.querySourceNoteByUid = function(uid, success, error) {
 		$.get(makeUrl("source_notes/" + uid), function(data) {
 			success(_.extend(data, new Row("source_notes")));
 		}).error(error);
-	}
-
-
-	this.queryTests = function(createdBy, success, error) {
-		$.get(makeUrl("tests"), {
-			created_by : createdBy
-		}, function(data) {
-			success(rowifyArray(data.tests, "tests"));
-		}).error(error);
-	}
-
-
-	this.queryTestByUid = function(uid, success, error) {
-		$.get(makeUrl("tests/" + uid), function(data) {
-			success(_.extend(data, new Row("tests")));
-		}).error(error);
-	}
+	};
 
 	// List of source type ids
 	// TODO replace with query

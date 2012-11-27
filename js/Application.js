@@ -5,7 +5,7 @@ function Application(opts) {
     // Setup options
     opts = _.extend({
         localDb : true,
-        serverUrl : "http://data.mwater.co/mwater/apiv2/",
+        serverUrl : "http://data.mwater.co/msewage/apiv2/",
         cacheImages : true,
         anchorState : true,
         initialPage : "Main",
@@ -21,18 +21,18 @@ function Application(opts) {
     // Open database
     var syncClient;
     if (opts.localDb) {
-        var db = window.openDatabase("mwater", "1.0", "mWater", 1000000);
+        var db = window.openDatabase("msewage", "1.0", "mSewage", 1000000);
 
         // Create sync database
         this.syncDb = new SyncDb(db, MWaterSqlModel.tableDefs);
 
         // Create model
-        this.model = new MWaterSqlModel(db, this.syncDb);
+        this.model = new MSewageSqlModel(db, this.syncDb);
 
         // Create sync client
         syncClient = new SyncClient(this.syncDb, syncServer);
     } else {
-        this.model = new MWaterApiModel(syncServer);
+        this.model = new MSewageApiModel(syncServer);
     }
 
     // Create problem reporter
