@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>mWater Data Map</title>
+        <title>mSewage Data Map</title>
         <meta name="viewport" content="width=device-width, target-densitydpi=medium-dpi, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
         <!--[if lt IE 9]>
@@ -39,8 +39,8 @@
         <script src="js/geoslicing.js"></script>
         <script src="js/GeoLoadTracker.js"></script>
         <script src="js/MapMarkerManager.js"></script>
-        <script src="js/MWaterApiModel.js"></script>
-        <script src="js/MWaterSqlModel.js"></script>
+        <script src="js/MSewageApiModel.js"></script>
+        <script src="js/MSewageSqlModel.js"></script>
         <script src="js/sampleanalysis.js"></script>
         <script src="js/Application.js"></script>
         <script src="js/SyncDb.js"></script>
@@ -61,16 +61,8 @@
         <script src="pages/Source.js"></script>
         <script src="pages/Map.js"></script>
         <script src="pages/NewSource.js"></script>
-        <script src="pages/Tests.js"></script>
-        <script src="pages/NewTest.js"></script>
         <script src="pages/Photo.js"></script>
-        <script src="pages/Test.js"></script>
-        <script src="pages/Test_0.js"></script>
-        <script src="pages/Test_1.js"></script>
-        <script src="pages/Test_2.js"></script>
-        <script src="pages/Test_4.js"></script>
-        <script src="pages/Test_5.js"></script>
-        <script src="pages/SourceNote.js"></script>
+        <script src="pages/SourceReport.js"></script>
         <script src="pages/ExampleSurvey.js"></script>
 
         <style>
@@ -112,7 +104,7 @@
         </style>
 
         <script>
-            var apiUrl = "http://data.mwater.co/mwater/apiv2/";
+            var apiUrl = "http://data.mwater.co/msewage/apiv2/";
             var infowindow = new google.maps.InfoWindow({
                 maxWidth : 410
             });
@@ -208,8 +200,8 @@
             var sourceMap;
             $(function() {
                 mapOptions = {
-                    zoom : 12,
-                    center : new google.maps.LatLng(-2.55, 32.95),
+                    zoom : 4,
+                    center : new google.maps.LatLng(25, -50),
                     mapTypeId : google.maps.MapTypeId.HYBRID
                 };
 
@@ -262,7 +254,7 @@
     <body>
         <ul id="menu" class="dropdown-menu">
             <li>
-                <a tabindex="-1" href="#" onclick="addSource()">Add Water Source</a>
+                <a tabindex="-1" href="#" onclick="addSource()">Add Sewage Source</a>
             </li>
         </ul>
 
@@ -282,7 +274,7 @@
 							/*background-color: #404040;*/
 						}
                     </style>
-                    <a class="brand" href="#" style="background: url('images/mwater-small.png') no-repeat left center; padding-left: 55px;">mWater</a>
+                    <a class="brand" href="#" style="background: url('images/mwater-small.png') no-repeat left center; padding-left: 55px;">mSewage</a>
                     <div id="navbar"></div>
                     <div class="nav-collapse">
                         <ul class="nav pull-right">

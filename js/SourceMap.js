@@ -17,15 +17,15 @@ function SourceMap(elem, apiUrl, mapOptions, sourceClick) {
 	};
 
 	this.createMarker = function(source) {
-		var color;
-		// Determine color
-		if (source.samples.length > 0) {
-			color = "#D0D0D0";
-			var anl = sampleanalysis.getAnalyses(_.last(source.samples));
-			if (anl.length > 0)
-				color = anl[0].color;
-		} else
-			color = "#D0D0D0";
+		var color = "FF4040";
+		// // Determine color
+		// if (source.samples.length > 0) {
+			// color = "#D0D0D0";
+			// var anl = sampleanalysis.getAnalyses(_.last(source.samples));
+			// if (anl.length > 0)
+				// color = anl[0].color;
+		// } else
+			// color = "#D0D0D0";
 
 		icon = {
 			path : google.maps.SymbolPath.CIRCLE,
