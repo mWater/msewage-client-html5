@@ -132,7 +132,9 @@ function Application(opts) {
                         syncServer.manualLogin("", "");
                         
                         // Go to login screen
-                        that.pager.closePage("Login");
+                        that.pager.closePage("Login", [function() {
+                            that.pager.closePage(opts.initialPage, opts.initialPageArgs);
+                        }]);
                         return;
                     }                    
                     if (message)
