@@ -43,6 +43,19 @@ pages.SourceReport = function(sourceUid, uid) {
             }));
 
             questions.push(new surveys.DropdownQuestion({
+                id : "fullness",
+                model : model,
+                prompt : "How full is the latrine/septic tank/cesspool?",
+                options : [[0, 'Empty'], [1, 'Half-full'], [2, 'Nearly full'], [3, 'Full'], [4, 'Overflowing']],
+                conditional : function() {
+                    if (page.source.source_type >= 2 && page.source.source_type <= 3)
+                        return true;
+                    return false;
+                }
+
+            }));
+
+            questions.push(new surveys.DropdownQuestion({
                 id : "pipesize",
                 model : model,
                 prompt : "What is the approximate pipe diameter?",
@@ -72,7 +85,6 @@ pages.SourceReport = function(sourceUid, uid) {
                         return true;
                     return false;
                 }
-
             }));
 
             questions.push(new surveys.RadioQuestion({
@@ -82,32 +94,43 @@ pages.SourceReport = function(sourceUid, uid) {
                 options : [[false, 'No'], [true, 'Yes']]
             }));
 
+            sections.push(new surveys.Section({
+                model : model,
+                title : "General Information",
+                contents : questions
+            }));
+            questions=[]
+
             questions.push(new surveys.TextQuestion({
                 id : "locationname",
                 model : model,
                 prompt : "Village or neighborhood name",
-                conditional : function() {
-                    return this.model.get('details') == true;
-                }
-
             }));
 
             questions.push(new surveys.TextQuestion({
                 id : "ownername",
                 model : model,
                 prompt : "Owner's name",
-                conditional : function() {
-                    return this.model.get('details') == true;
-                }
-
             }));
 
-            questions.push(new surveys.TextQuestion({
+            questions.push(new surveys.DropdownQuestion({
+                id : "toilettype",
+                model : model,
+                prompt : "What is the type of toilet?",
+                options : [['flush', 'Flush Toilet'], ['hanging', 'Trickle'], ['composting', 'Composting toilet'], ['pit', 'Pit latrine'], ['vip', 'Ventilated improved pit latrine']],
+                conditional : function() {
+                    if (page.source.source_type == 1)
+                        return true;
+                    return false;
+                }
+            }));
+            
+            questions.push(new surveys.NumberQuestion({
                 id : "toiletsconnected",
                 model : model,
                 prompt : "How many toilets are connected to this source?",
                 conditional : function() {
-                    return this.model.get('details') == true && ((page.source.source_type >= 1 && page.source.source_type <= 3) || page.source.source_type == 9);
+                    return (page.source.source_type == 3 || page.source.source_type == 9);
                 }
 
             }));
@@ -117,16 +140,39 @@ pages.SourceReport = function(sourceUid, uid) {
                 model : model,
                 prompt : "Is publically or privately owned?",
                 options : [['private', 'Private'], ['public', 'Public']],
-                conditional : function() {
-                    return this.model.get('details') == true;
-                }
+            }));
 
+            questions.push(new surveys.DropdownQuestion({
+                id : "connectsto",
+                model : model,
+                prompt : "The toilet connects to:",
+                options : [['unknown', 'Unknown'], ['drainage', 'Drainage ditch/canal'], ['ground', 'Open to ground'], ['sewer', 'Sewer'], ['latrine', 'Latrine'], ['tank', 'Septic tank/cesspool']],
+                conditional : function() {
+                    if (page.source.source_type == 1 && model.get('toilettype')=='flush')
+                        return true;
+                    return false;
+                }
+            }));
+            
+            questions.push(new surveys.MulticheckQuestion({
+                id : "latrinefeatures",
+                model : model,
+                prompt : "Latrine has:",
+                options : [['slab', 'Slab'], ['pourflush', 'Pourflush']],
+                conditional : function() {
+                    if (page.source.source_type == 1 && model.get('toilettype')=='pit')
+                        return true;
+                    return false;
+                }
             }));
 
             sections.push(new surveys.Section({
                 model : model,
-                title : "General Information",
-                contents : questions
+                title : "Details",
+                contents : questions,
+                conditional : function() {
+                    return this.model.get('details') == true;
+                }
             }));
 
             var view = new surveys.SurveyView({

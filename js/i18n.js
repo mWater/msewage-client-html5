@@ -6,9 +6,9 @@ i18n = {
 		return key;
 	},
 	"sources.source_type.0" : "Open defecation site",
-	"sources.source_type.1" : "Toilet emptying to ground or water",
-	"sources.source_type.2" : "Latrine tank",
-	"sources.source_type.3" : "Septic tank",
+	"sources.source_type.1" : "Toilet",
+	"sources.source_type.2" : "Latrine",
+	"sources.source_type.3" : "Septic tank/cesspool",
 	"sources.source_type.4" : "Raw sewage outflow",
 	"sources.source_type.5" : "Treatment plant outflow",
 	"sources.source_type.6" : "Combined sewer outflow",

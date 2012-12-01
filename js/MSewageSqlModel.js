@@ -1,5 +1,5 @@
-
-function MWaterSqlModel(db, syncDb) {
+// TODO NOT IMPLEMENTED YET. NEED TO PUT CORRECT TABLE STRUCTURE 
+function MSewageSqlModel(db, syncDb) {
     var that = this;
 
 	this.init = function(success, error) {
